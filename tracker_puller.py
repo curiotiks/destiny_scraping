@@ -17,9 +17,9 @@ users = pd.Series(dtype='str')
 
 for i in u_output: 
     gamerTag = i.text.strip()
-    users.add(gamerTag)
+    user_list.append(gamerTag)
     
-users.str.encode(encoding = 'utf-8')
+# users.str.encode(encoding = 'utf-8')
 
 ## PLATFORM
 p_output = soup.find_all('svg', class_='platform-icon')
@@ -35,6 +35,7 @@ for p in p_output:
 data = {'GMRTAG': users,
         'PLTFRM': platform}
 
-df = pd.DataFrame(data)
+print(data)
+# df = pd.DataFrame(data)
 
 
