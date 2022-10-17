@@ -24,17 +24,19 @@ row_values = {
     'rounds':   None
 }
 
-row_values['rank'] = table.find('td', class_='rank').text.strip()
-row_values['platform'] = table.find('svg', class_='platform-icon')['class'][2].replace("platform-", "")
-row_values['player'] = table.find('td', class_='username').text.strip()
-row_values['kd'] = table.find('td', class_='stat highlight').text.strip()
-row_values['rounds'] = table.find('td', class_='stat collapse').text.strip()
+rows = soup.find('tbody').find_all('tr')
 
-## Build list above and then add to series below
-player_row = pd.Series(row_values)
-data = data.append(player_row, ignore_index=True)
-data = data.set_index('rank')
-
+for row in rows:
+    
+    cells = row.find_all('td')
+    
+    row_values['rank'] = cells[0].get_text().strip()
+    row_values['platform'] = row.find('svg', class_='platform-icon')['class'][2].replace("platform-", "")
+    row_values['player'] = cells[1].unicode_markup.get_text().strip()
+    row_values['kd'] = cells[3].get_text().strip()
+    row_values['rounds'] = cells[4].get_text().strip()
+    
+    player_row = pd.Series(row_values)
+    data = data.append(player_row, ignore_index=True)
+    
 print(data.head())
-
-## Now I have one row. Stop bothering with the encoding issue and work on iterating across pages!
